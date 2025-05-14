@@ -7,13 +7,11 @@
 
 <!-- badges: end -->
 
-The goal of `{academiadates}` is to extend
-[`{tsibble}`](https://tsibble.tidyverts.org/) by adding a new class
-which is built to assist handling date intervals that are common in
-academic institutions, that being three terms annually.
+The goal of `{academiadates}` is to extend `{tsibble}` by adding a new
+class which is built to assist handling date intervals that are common
+in academic institutions, that being three terms annually.
 
-[`{lubridate}`](https://lubridate.tidyverse.org/index.html) has
-[`quarter()` and
+`{lubridate}` has [`quarter()` and
 `semester()`](https://lubridate.tidyverse.org/reference/quarter.html)
 methods to access the quarter or semester from a date. This lacks the
 functionality for a variable number of periods per year which was
@@ -25,7 +23,7 @@ but has not received any further work.
 [quarters](https://tsibble.tidyverts.org/reference/year-quarter.html) in
 its ecosystem. It also provides
 [scales](https://tsibble.tidyverts.org/reference/tsibble-scales.html)
-which wrap [`{ggplot2}`’s date
+which wrap [ggplot2’s date
 scales](https://ggplot2.tidyverse.org/reference/scale_date.html). These
 can be seen throughout [*Forecasting: Principles and
 Practice*](https://otexts.com/fpp3/) by Hyndman and Athanasopoulos. The
@@ -34,7 +32,7 @@ first example of a quarter timescale in [Figure
 
 ## Installation
 
-You can install the development version of {`academiadates`} from
+You can install the development version of `{academiadates}` from
 [GitHub](https://github.com/) with:
 
 ``` r
