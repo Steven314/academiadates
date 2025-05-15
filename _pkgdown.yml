@@ -1,6 +1,10 @@
 url: https://steven314.github.io/academiadates/
 template:
   bootstrap: 5
+  bslib:
+    bootswatch: materia
+    pkgdown-nav-height: 100px
+    primary: "#2294b7"
 
 authors:
   Steven Carter:
