@@ -41,7 +41,7 @@ lubridate::quarter."></head><body>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">trimester</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"{ay_year} T{trimester}"</span>, academic_start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">trimester</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"ay_year trimester"</span>, academic_start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -53,9 +53,7 @@ lubridate::quarter."></head><body>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>A <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue::glue</a></code> specification containing any of: <code>ay_year</code>,
-<code>cal_year</code>, <code>trimester</code>, <code>date_last</code>, <code>date_first</code>. The default behavior is
-to return the academic year with the trimester number following a 'T'.</p></dd>
+<dd><p>The format to be returned for the trimester. Can be "trimester", "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester" (academic year with trimester in numeric form), "year_start/end"., "date_last", or "date_first". These are similar to the options for <code><a href="https://lubridate.tidyverse.org/reference/quarter.html" class="external-link">lubridate::quarter</a></code>.</p></dd>
 
 
 <dt id="arg-academic-start">academic_start<a class="anchor" aria-label="anchor" href="#arg-academic-start"></a></dt>
@@ -65,7 +63,7 @@ start of the academic year.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A character string.</p>
+    <p>A numeric or character depnding on <code>type</code>.</p>
     </div>
 
     <div class="section level2">
@@ -76,9 +74,8 @@ start of the academic year.</p></dd>
 <span class="r-in"><span><span class="fu">trimester</span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html" class="external-link">today</a></span><span class="op">(</span><span class="op">)</span>, academic_start <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026 T1"</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Notice that this returns a string, not an integer.</span></span></span>
-<span class="r-in"><span><span class="fu">trimester</span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html" class="external-link">today</a></span><span class="op">(</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"{trimester}"</span>, academic_start <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1"</span>
+<span class="r-in"><span><span class="fu">trimester</span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html" class="external-link">today</a></span><span class="op">(</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"trimester"</span>, academic_start <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
