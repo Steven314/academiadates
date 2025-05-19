@@ -20,4 +20,5 @@ Imports:
     purrr,
     rlang,
     tidyselect,
+    tsibble,
     vctrs

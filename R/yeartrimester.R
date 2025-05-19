@@ -207,7 +207,10 @@ vec_cast.POSIXct.yeartrimester <- function(x, to, ...) {
 #' @export
 vec_cast.double.yeartrimester <- function(x, to, ...) {
     base <- yeartrimester(0, academic_start(x))
-    4 * (year(x) - year(base)) + trimester(x) - trimester(base)
+    4 *
+        (year(x) - year(base)) +
+        as.numeric(trimester(x,    type = "{trimester}")) -
+        as.numeric(trimester(base, type = "{trimester}"))
 }
 
 #' @export
