@@ -4,20 +4,18 @@
 \alias{trimester}
 \title{Get the academic trimester of a date-time}
 \usage{
-trimester(x, type = "{ay_year} T{trimester}", academic_start = 1)
+trimester(x, type = "ay_year trimester", academic_start = 1)
 }
 \arguments{
 \item{x}{A date-time object.}
 
-\item{type}{A \code{\link[glue:glue]{glue::glue}} specification containing any of: \code{ay_year},
-\code{cal_year}, \code{trimester}, \code{date_last}, \code{date_first}. The default behavior is
-to return the academic year with the trimester number following a 'T'.}
+\item{type}{The format to be returned for the trimester. Can be "trimester", "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester" (academic year with trimester in numeric form), "year_start/end"., "date_last", or "date_first". These are similar to the options for \code{\link[lubridate:quarter]{lubridate::quarter}}.}
 
 \item{academic_start}{A integer from 1 to 12 indicating the month for the
 start of the academic year.}
 }
 \value{
-A character string.
+A numeric or character depnding on \code{type}.
 }
 \description{
 Trimesters divide the year into thirds. This is largely based on
@@ -28,6 +26,5 @@ trimester(lubridate::as_date("2024-08-24"), academic_start = 5)
 
 trimester(lubridate::today(), academic_start = 5)
 
-# Notice that this returns a string, not an integer.
-trimester(lubridate::today(), type = "{trimester}", academic_start = 5)
+trimester(lubridate::today(), type = "trimester", academic_start = 5)
 }

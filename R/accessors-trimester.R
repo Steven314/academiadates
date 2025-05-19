@@ -4,14 +4,11 @@
 #' [`lubridate::quarter`].
 #'
 #' @param x A date-time object.
-#' @param type A [`glue::glue`] specification containing any of: `ay_year`,
-#'   `cal_year`, `trimester`, `date_last`, `date_first`. The default behavior is
-#'   to return the academic year with the trimester number following a 'T'.
+#' @param type The format to be returned for the trimester. Can be "trimester", "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester" (academic year with trimester in numeric form), "year_start/end"., "date_last", or "date_first". These are similar to the options for [`lubridate::quarter`].
 #' @param academic_start A integer from 1 to 12 indicating the month for the
 #'   start of the academic year.
 #'
-#' @returns A character string.
-#' @importFrom glue glue
+#' @returns A numeric or character depnding on `type`.
 #' @importFrom lubridate today as_date month year add_with_rollback make_date
 #' @export
 #'
@@ -20,9 +17,8 @@
 #'
 #' trimester(lubridate::today(), academic_start = 5)
 #'
-#' # Notice that this returns a string, not an integer.
-#' trimester(lubridate::today(), type = "{trimester}", academic_start = 5)
-trimester <- function(x, type = "{ay_year} T{trimester}", academic_start = 1) {
+#' trimester(lubridate::today(), type = "trimester", academic_start = 5)
+trimester <- function(x, type = "ay_year trimester", academic_start = 1) {
     if (length(academic_start) > 1) {
         stop("`academic_start` must have a length of one.")
     }
@@ -67,11 +63,23 @@ trimester <- function(x, type = "{ay_year} T{trimester}", academic_start = 1) {
         months(4)
     ) - lubridate::days(1)
 
-    return(
-        sapply(
-            X = glue::glue(type),
-            FUN = \(.x) if (.x == "NA") NA else as.character(.x),
-            USE.NAMES = FALSE
-        )
+    switch(
+        type,
+        "trimester" = trimester,
+        "ay_year trimester" = sprintf(
+            "%d T%d",
+            ay_year,
+            trimester
+        ),
+        "year_start/end" = sprintf(
+            "%d/%d T%d",
+            final_years - 1,
+            final_years %% 100,
+            trimester
+        ),
+        "ay_year.trimester" = ay_year + (trimester / 10),
+        "date_first" = date_first,
+        "date_last"  = date_last,
+        stop("Unsuported type ", type)
     )
 }

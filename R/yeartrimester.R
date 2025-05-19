@@ -23,7 +23,11 @@ yeartrimester <- function(x, academic_start = 1) {
 #' @param year,trimester A vector of numerics which give year and trimester
 #'   values.
 #' @export
-make_yeartrimester <- function(year = 1970L, trimester = 1L, academic_start = 1) {
+make_yeartrimester <- function(
+    year = 1970L,
+    trimester = 1L,
+    academic_start = 1
+) {
     lst <- vctrs::vec_recycle_common(year = year, trimester = trimester)
 
     if (any(lst$trimester > 3 | lst$trimster < 1)) {
@@ -90,8 +94,14 @@ yeartrimester.character <- function(x, academic_start = 1) {
         yr_tri <- regmatches(x, gregexpr("[[:digit:]]+", x))
 
         # ensure they are the complete and valid.
-        digits_lgl <- purrr::map_lgl(yr_tri, function(.x) !rlang::has_length(.x, 2))
-        digits_len <- purrr::map_int(yr_tri, function(.x) sum(nchar(.x)))
+        digits_lgl <- purrr::map_lgl(
+            yr_tri,
+            function(.x) !rlang::has_length(.x, 2)
+        )
+        digits_len <- purrr::map_int(
+            yr_tri,
+            function(.x) sum(nchar(.x))
+        )
         if (any(digits_lgl) || any(digits_len != 5)) {
             abort("Character strings are not in a standard unambiguous format.")
         }
@@ -100,10 +110,14 @@ yeartrimester.character <- function(x, academic_start = 1) {
         yr_lgl <- purrr::map(yr_tri, function(.x) grepl("[[:digit:]]{4}", .x))
 
         # extract the year part as an integer.
-        yr <- as.integer(purrr::map2_chr(yr_tri, yr_lgl, function(.x, .y) .x[.y]))
+        yr <- as.integer(
+            purrr::map2_chr(yr_tri, yr_lgl, function(.x, .y) .x[.y])
+        )
 
         # extract the trimester part as an integer as well.
-        tri <- as.integer(purrr::map2_chr(yr_tri, yr_lgl, function(.x, .y) .x[!.y]))
+        tri <- as.integer(
+            purrr::map2_chr(yr_tri, yr_lgl, function(.x, .y) .x[!.y])
+        )
 
         # check that the trimester is valid.
         if (any(tri > 3 | tri < 1)) {
@@ -127,8 +141,11 @@ yeartrimester.yearweek <- yeartrimester.POSIXct
 yeartrimester.yearmonth <- yeartrimester.POSIXct
 
 #' @export
-yeartrimester.yeartrimester <- function(x, academic_start = attr(x, "academic_start")) {
-    # This doesn't seem right to me, but that's have the `tsibble` equivalents
+yeartrimester.yeartrimester <- function(
+    x,
+    academic_start = attr(x, "academic_start")
+) {
+    # This doesn't seem right to me, but that's how the `tsibble` equivalents
     # work.
 
     as <- academic_start(x)
@@ -209,8 +226,8 @@ vec_cast.double.yeartrimester <- function(x, to, ...) {
     base <- yeartrimester(0, academic_start(x))
     4 *
         (year(x) - year(base)) +
-        as.numeric(trimester(x,    type = "{trimester}")) -
-        as.numeric(trimester(base, type = "{trimester}"))
+        trimester(x,    type = "trimester") -
+        trimester(base, type = "trimester")
 }
 
 #' @export
@@ -283,9 +300,15 @@ vec_arith.yeartrimester.default <- function(op, x, y, ...) {
 #' @export
 vec_arith.yeartrimester.numeric <- function(op, x, y, ...) {
     if (op == "+") {
-        new_yeartrimester(as_date(x) + period(months = y * 4), academic_start(x))
+        new_yeartrimester(
+            as_date(x) + period(months = y * 4),
+            academic_start(x)
+        )
     } else if (op == "-") {
-        new_yeartrimester(as_date(x) - period(months = y * 4), academic_start(x))
+        new_yeartrimester(
+            as_date(x) - period(months = y * 4),
+            academic_start(x)
+        )
     } else {
         vctrs::stop_incompatible_op(op, x, y)
     }
@@ -333,17 +356,19 @@ format.yeartrimester <- function(x, format = "%Y T%q", ...) {
 
     yrtri <- x |>
         trimester(
-            type = "{ay_year}.{trimester}",
+            type = "ay_year.trimester",
             academic_start = as
-        ) |>
-        as.numeric()
+        )
 
     yr  <- trunc(yrtri)
     tri <- round(yrtri %% 1 * 10)
 
-    tri_sub <- purrr::map_chr(formatC(tri), function(z) gsub("%q", z, x = format))
+    tri_sub <- purrr::map_chr(
+        formatC(tri),
+        function(z) gsub("%q", z, x = format)
+    )
     tri_sub[is.na(tri_sub)] <- "-" # NA formats cause errors
-    format.Date(make_date(yr, tri * 4 - 2), format = tri_sub)
+    format.Date(make_date(yr, tri * 4), format = tri_sub)
 }
 
 #' @rdname academiadates-vctrs
@@ -355,7 +380,11 @@ obj_print_data.yeartrimester <- function(x, ...) {
 
 #' @export
 obj_print_footer.yeartrimester <- function(x, ...) {
-    cli::cat_line("# Academic year starts in ", month.name[academic_start(x)], ".")
+    cli::cat_line(
+        "# Academic year starts in ",
+        month.name[academic_start(x)],
+        "."
+    )
 }
 
 fmt_month <- function(x) {
@@ -439,11 +468,11 @@ seq.ordered <- function(from, to, by, ...) {
 #' lubridate::year(y) # calendar years
 academic_year <- function(x) {
     stopifnot(is_yeartrimester(x))
-    trunc(as.numeric(trimester(
+    trunc(trimester(
         x,
-        type = '{ay_year}.{trimester}',
+        type = 'ay_year.trimester',
         academic_start = academic_start(x)
-    )))
+    ))
 }
 
 #' @importFrom generics union
