@@ -66,10 +66,13 @@ yeartrimester.logical <- function(x, ...) {
 yeartrimester.POSIXct <- function(x, academic_start = 1) {
     yr <- lubridate::year(x)
     mth <- academic_start + (lubridate::month(x) - academic_start) %/% 4 * 4
-    mth0 <- mth == 0
-    mth1 <- mth == -1
+
+    mth0      <- mth == 0
+    mth1      <- mth == -1
+    mth2      <- mth == -2
     mth[mth0] <- 12
     mth[mth1] <- 11
+    mth[mth2] <- 10
     lgl <- mth0 | mth1
     vctrs::vec_slice(yr, lgl) <- vctrs::vec_slice(yr, lgl) - 1
     new_yeartrimester(lubridate::make_date(yr, mth), academic_start)
@@ -351,7 +354,7 @@ vec_arith.yeartrimester.MISSING <- function(op, x, y, ...) {
 # Formatting and Labels ----
 
 #' @export
-format.yeartrimester <- function(x, format = "%Y T%q", ...) {
+format.yeartrimester <- function(x, format = "%Y T%t", ...) {
     as <- academic_start(x)
 
     yrtri <- x |>
@@ -365,7 +368,7 @@ format.yeartrimester <- function(x, format = "%Y T%q", ...) {
 
     tri_sub <- purrr::map_chr(
         formatC(tri),
-        function(z) gsub("%q", z, x = format)
+        function(z) gsub("%t", z, x = format)
     )
     tri_sub[is.na(tri_sub)] <- "-" # NA formats cause errors
     format.Date(make_date(yr, tri * 4), format = tri_sub)
@@ -445,18 +448,18 @@ seq.yeartrimester <- function(
     }
 }
 
-#' @export
-seq.ordered <- function(from, to, by, ...) {
-    if (!rlang::is_bare_numeric(by, n = 1)) {
-        abort("`by` only takes a numeric.")
-    }
-
-    lvls     <- levels(from)
-    idx_from <- which(lvls %in% from)
-    idx_to   <- which(lvls %in% to)
-    idx      <- seq.int(idx_from, idx_to, by = by)
-    ordered(lvls[idx], levels = lvls)
-}
+# #' @export
+# seq.ordered <- function(from, to, by, ...) {
+#     if (!rlang::is_bare_numeric(by, n = 1)) {
+#         abort("`by` only takes a numeric.")
+#     }
+#
+#     lvls     <- levels(from)
+#     idx_from <- which(lvls %in% from)
+#     idx_to   <- which(lvls %in% to)
+#     idx      <- seq.int(idx_from, idx_to, by = by)
+#     ordered(lvls[idx], levels = lvls)
+# }
 
 #' @rdname year-trimester
 #' @export

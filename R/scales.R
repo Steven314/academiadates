@@ -43,7 +43,9 @@ yeartrimester_trans <- function() {
     scales::trans_new(
         "yeartrimester",
         transform = function(x) {
-            scales::date_trans()$transform(as_date(x))
+            scales::date_trans()$transform(
+                as_date(x) + months(academic_start(x) - 1)
+            )
         },
         inverse = function(x) {
             yeartrimester(scales::date_trans()$inverse(x))
@@ -144,6 +146,6 @@ scale_size_yeartrimester <- function(...) {
         "ScaleContinuousYeartrimester",
         ggplot2::scale_size_date(...),
         trans      = yeartrimester_trans(),
-        get_breaks = yeartrimester_get_break
+        get_breaks = yeartrimester_get_breaks
     )
 }

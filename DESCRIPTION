@@ -15,10 +15,15 @@ Imports:
     anytime,
     cli,
     generics,
-    glue,
     lubridate,
+    methods,
     purrr,
     rlang,
     tidyselect,
     tsibble,
     vctrs
+Suggests: 
+    dplyr,
+    ggplot2 (>= 3.3.0),
+    scales (>= 1.1.0),
+VignetteBuilder: knitr
