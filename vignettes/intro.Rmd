@@ -1,0 +1,109 @@
+---
+title: "Introduction to academiadates"
+author: "Steven Carter"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to tsibble}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+I've created the `{academiadates}` package to extend support of the [`tidyverts`](https://tidyverts.org/) ecosystem handling a specific pattern of dates.
+The pattern of dates is academic terms, hence the name.
+Most institutions that I'm aware of use three terms per calendar year: spring, summer, and fall.
+
+The `{tsibble}` package provides a new data frame class, the [`tsibble`](https://tsibble.tidyverts.org/reference/tsibble.html), and a handful of classes for various time intervals.
+Those are covered on the [`{tsibble}` home page](https://tsibble.tidyverts.org/index.html).
+This package provides a new class, `yeartrimester`, which is suited to handle three terms in a similar way as [`yearquarter`](https://tsibble.tidyverts.org/reference/year-quarter.html).
+
+## Creation
+
+```{r message=FALSE}
+library(academiadates)
+library(tsibble)
+library(tsibbledata) # an example dataset
+library(dplyr)
+```
+
+We have the following dataset from `{tsibbledata}` which is monthly data with counts of Australian livestock used for food.
+
+```{r}
+aus_livestock
+```
+
+Notice how the first month is July.
+We can set the fiscal or academic year to start the seventh month for the sake of having a whole first year.
+
+As an example we can aggregate this to quarters and trimesters.
+We have to convert to a regular `tibble` to make regrouping the data under the new time index easier.
+
+```{r}
+# quarters
+aus_q <- aus_livestock |> 
+    as_tibble() |> 
+    mutate(Quarter = yearquarter(Month, fiscal_start = 7)) |> 
+    summarize(
+        Count = sum(Count),
+        .by   = c(Quarter, Animal, State)
+    ) |> 
+    as_tsibble(index = Quarter, key = c(Animal, State))
+
+# trimesters
+aus_t <- aus_livestock |> 
+    as_tibble() |>
+    mutate(Trimester = yeartrimester(Month, academic_start = 7)) |>
+    summarize(
+        Count = sum(Count),
+        .by   = c(Trimester, Animal, State)
+    ) |> 
+    as_tsibble(index = Trimester, key = c(Animal, State))
+```
+
+```{r}
+aus_q
+
+aus_t
+```
+
+If you have an unusual form of date, such as `Fall 2025`, you can convert the column to a date type, `2025-09-01`, and then convert to `yeartrimester` with `yeartrimester()`.
+(I intend to add a conversion from a term name with calendar year directly to a `yeartrimester` object.)
+
+## Plotting
+
+The built-in plotting functionality is limited.
+The plotting functionality for the `tidyverts` ecosystem is partly from the `{feasts}` package: [Graphics](https://feasts.tidyverts.org/reference/index.html#graphics).
+Some of those functions depend on the class of the index.
+This means that, without porting those functions to accommodate the `yeartrimester` class, a portion of the functionality will not work.
+
+(I hope to do that in the future, but the functionality can be recreated manually for the time being.)
+
+```{r}
+library(ggplot2)
+
+aus_t |> 
+    filter(
+        Animal == "Bulls, bullocks and steers",
+        Trimester >= yeartrimester('2012 T1', academic_start = 7)
+    ) |> 
+    ggplot(
+        aes(
+            x = Trimester,
+            y = Count,
+            color = State
+        )
+    ) +
+    geom_line()
+```
+
+> There is a bug in `{tsibble}` when using `yearquarter` with a `fiscal_start`.
+> `yearquarter_trans` does not account for that offset, so the `fiscal_start` is dropped through transforming to a date and then inverting the transform.
+> 
+> I've worked around this by adding in the additional months to it when transforming to a date.
+> The re-transformed `yeartrimester` does not have an offset, but the offset is built-in.

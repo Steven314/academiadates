@@ -25,5 +25,8 @@ Imports:
 Suggests: 
     dplyr,
     ggplot2 (>= 3.3.0),
+    knitr,
+    rmarkdown,
     scales (>= 1.1.0),
+    tsibbledata
 VignetteBuilder: knitr
