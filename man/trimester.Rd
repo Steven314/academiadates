@@ -9,7 +9,11 @@ trimester(x, type = "ay_year trimester", academic_start = 1)
 \arguments{
 \item{x}{A date-time object.}
 
-\item{type}{The format to be returned for the trimester. Can be "trimester", "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester" (academic year with trimester in numeric form), "year_start/end"., "date_last", or "date_first". These are similar to the options for \code{\link[lubridate:quarter]{lubridate::quarter}}.}
+\item{type}{The format to be returned for the trimester. Can be "trimester",
+"ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester"
+(academic year with trimester in numeric form), "year_start/end".,
+"date_last", or "date_first". These are similar to the options for
+\code{\link[lubridate:quarter]{lubridate::quarter}}.}
 
 \item{academic_start}{A integer from 1 to 12 indicating the month for the
 start of the academic year.}

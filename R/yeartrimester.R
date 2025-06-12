@@ -96,7 +96,7 @@ yeartrimester.character <- function(x, academic_start = 1) {
         # take the numeric parts
         yr_tri <- regmatches(x, gregexpr("[[:digit:]]+", x))
 
-        # ensure they are the complete and valid.
+        # ensure they are complete and valid.
         digits_lgl <- purrr::map_lgl(
             yr_tri,
             function(.x) !rlang::has_length(.x, 2)

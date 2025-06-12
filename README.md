@@ -27,7 +27,7 @@ which wrap [ggplot2’s date
 scales](https://ggplot2.tidyverse.org/reference/scale_date.html). These
 can be seen throughout [*Forecasting: Principles and
 Practice*](https://otexts.com/fpp3/) by Hyndman and Athanasopoulos. The
-first example of a quarter timescale in [Figure
+first example of a quarter timescale is in [Figure
 1.1](https://otexts.com/fpp3/data-methods.html#data-methods).
 
 ## Installation
@@ -44,6 +44,8 @@ pak::pak("Steven314/academiadates")
 # install.packages("remotes")
 remotes::install_github("Steven314/academiadates")
 ```
+
+To get started check out `vignette("intro")`.
 
 ## Related Resources
 

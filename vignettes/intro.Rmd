@@ -72,8 +72,8 @@ aus_q
 aus_t
 ```
 
-If you have an unusual form of date, such as `Fall 2025`, you can convert the column to a date type, `2025-09-01`, and then convert to `yeartrimester` with `yeartrimester()`.
-(I intend to add a conversion from a term name with calendar year directly to a `yeartrimester` object.)
+If your date is in a format like `Fall 2025`, you can covert it to `yeartrimester` using `seasonal_trimester()`.
+This is set up to work for fall, spring, and summer terms.
 
 ## Plotting
 
