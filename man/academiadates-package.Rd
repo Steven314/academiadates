@@ -6,6 +6,8 @@
 \alias{academiadates-package}
 \title{academiadates: Tidy-Handling of Academic Dates}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Extends `tsibble` by adding a class that supports three terms per year.
 }
 \seealso{

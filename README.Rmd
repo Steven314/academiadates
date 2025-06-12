@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# academiadates
+# academiadates <a href="https://steven314.github.io/academiadates/"><img src="man/figures/logo.png" align="right" height="120" alt="academiadates website" /></a>
+
 
 <!-- badges: start -->
 <!-- badges: end -->
