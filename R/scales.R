@@ -1,4 +1,3 @@
-
 #' academiadates scales for ggplot2
 #'
 #' Defines ggplot2 scales for the [`yeartrimester`] index.
@@ -34,7 +33,7 @@ pkg_not_available <- function(pkg, min_version = NULL) {
 
 scale_fun_pkg_check <- function() {
     pkg_not_available("ggplot2", "3.3.0")
-    pkg_not_available("scales",  "1.1.0")
+    pkg_not_available("scales", "1.1.0")
 }
 
 scale_type.yeartrimester <- function(x) c("yeartrimester", "date", "continuous")
@@ -81,7 +80,7 @@ scale_x_yeartrimester <- function(...) {
     ggplot2::ggproto(
         "ScaleContinuousYeartrimester",
         ggplot2::scale_x_date(...),
-        trans      = yeartrimester_trans(),
+        trans = yeartrimester_trans(),
         get_breaks = yeartrimester_get_breaks
     )
 }
@@ -93,7 +92,7 @@ scale_y_yeartrimester <- function(...) {
     ggplot2::ggproto(
         "ScaleContinuousYeartrimester",
         ggplot2::scale_y_date(...),
-        trans      = yeartrimester_trans(),
+        trans = yeartrimester_trans(),
         get_breaks = yeartrimester_get_breaks
     )
 }
@@ -105,7 +104,7 @@ scale_colour_yeartrimester <- function(...) {
     ggplot2::ggproto(
         "ScaleContinuousYeartrimester",
         ggplot2::scale_colour_date(...),
-        trans      = yeartrimester_trans(),
+        trans = yeartrimester_trans(),
         get_breaks = yeartrimester_get_breaks
     )
 }
@@ -121,7 +120,7 @@ scale_alpha_yeartrimester <- function(...) {
     ggplot2::ggproto(
         "ScaleContinuousYeartrimester",
         ggplot2::scale_alpha_date(...),
-        trans      = yeartrimester_trans(),
+        trans = yeartrimester_trans(),
         get_breaks = yeartrimester_get_breaks
     )
 }
@@ -133,7 +132,7 @@ scale_fill_yeartrimester <- function(...) {
     ggplot2::ggproto(
         "ScaleContinuousYeartrimester",
         ggplot2::scale_fill_date(...),
-        trans      = yeartrimester_trans(),
+        trans = yeartrimester_trans(),
         get_breaks = yeartrimester_get_breaks
     )
 }
@@ -145,7 +144,7 @@ scale_size_yeartrimester <- function(...) {
     ggplot2::ggproto(
         "ScaleContinuousYeartrimester",
         ggplot2::scale_size_date(...),
-        trans      = yeartrimester_trans(),
+        trans = yeartrimester_trans(),
         get_breaks = yeartrimester_get_breaks
     )
 }

@@ -4,7 +4,11 @@
 #' [`lubridate::quarter`].
 #'
 #' @param x A date-time object.
-#' @param type The format to be returned for the trimester. Can be "trimester", "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester" (academic year with trimester in numeric form), "year_start/end"., "date_last", or "date_first". These are similar to the options for [`lubridate::quarter`].
+#' @param type The format to be returned for the trimester. Can be "trimester",
+#'   "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester"
+#'   (academic year with trimester in numeric form), "year_start/end".,
+#'   "date_last", or "date_first". These are similar to the options for
+#'   [`lubridate::quarter`].
 #' @param academic_start A integer from 1 to 12 indicating the month for the
 #'   start of the academic year.
 #'
@@ -58,10 +62,11 @@ trimester <- function(x, type = "ay_year trimester", academic_start = 1) {
     )
 
     date_first <- trimester_starting_dates
-    date_last  <- lubridate::add_with_rollback(
+    date_last <- lubridate::add_with_rollback(
         trimester_starting_dates,
         months(4)
-    ) - lubridate::days(1)
+    ) -
+        lubridate::days(1)
 
     switch(
         type,
@@ -79,7 +84,7 @@ trimester <- function(x, type = "ay_year trimester", academic_start = 1) {
         ),
         "ay_year.trimester" = ay_year + (trimester / 10),
         "date_first" = date_first,
-        "date_last"  = date_last,
+        "date_last" = date_last,
         stop("Unsuported type ", type)
     )
 }

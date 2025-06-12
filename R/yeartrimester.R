@@ -67,9 +67,9 @@ yeartrimester.POSIXct <- function(x, academic_start = 1) {
     yr <- lubridate::year(x)
     mth <- academic_start + (lubridate::month(x) - academic_start) %/% 4 * 4
 
-    mth0      <- mth == 0
-    mth1      <- mth == -1
-    mth2      <- mth == -2
+    mth0 <- mth == 0
+    mth1 <- mth == -1
+    mth2 <- mth == -2
     mth[mth0] <- 12
     mth[mth1] <- 11
     mth[mth2] <- 10
@@ -154,10 +154,11 @@ yeartrimester.yeartrimester <- function(
     as <- academic_start(x)
     mth <- academic_start - as
     new_yeartrimester(
-        new_date(x) + lubridate::period(
-            year  = -(as == 1) + (academic_start == 1),
-            month = mth
-        ),
+        new_date(x) +
+            lubridate::period(
+                year = -(as == 1) + (academic_start == 1),
+                month = mth
+            ),
         academic_start
     )
 }
@@ -166,12 +167,12 @@ yeartrimester.yeartrimester <- function(
 yeartrimester.numeric <- function(x, academic_start = 1) {
     # define the base of the index
     date0 <- lubridate::make_date(
-        year  = 1969 + as.integer(academic_start == 1),
+        year = 1969 + as.integer(academic_start == 1),
         month = academic_start
     )
 
     new_yeartrimester(
-        x              = date0 + lubridate::period(month = x * 4),
+        x = date0 + lubridate::period(month = x * 4),
         academic_start = academic_start
     )
 }
@@ -229,7 +230,7 @@ vec_cast.double.yeartrimester <- function(x, to, ...) {
     base <- yeartrimester(0, academic_start(x))
     4 *
         (year(x) - year(base)) +
-        trimester(x,    type = "trimester") -
+        trimester(x, type = "trimester") -
         trimester(base, type = "trimester")
 }
 
@@ -363,7 +364,7 @@ format.yeartrimester <- function(x, format = "%Y T%t", ...) {
             academic_start = as
         )
 
-    yr  <- trunc(yrtri)
+    yr <- trunc(yrtri)
     tri <- round(yrtri %% 1 * 10)
 
     tri_sub <- purrr::map_chr(
@@ -377,7 +378,9 @@ format.yeartrimester <- function(x, format = "%Y T%t", ...) {
 #' @rdname academiadates-vctrs
 #' @export
 obj_print_data.yeartrimester <- function(x, ...) {
-    if (length(x) == 0) return()
+    if (length(x) == 0) {
+        return()
+    }
     print(format(x))
 }
 
@@ -421,7 +424,7 @@ seq.yeartrimester <- function(
         new_yeartrimester(
             seq_date(
                 from = from,
-                to   = to,
+                to = to,
                 length.out = length.out,
                 along.with = along.with,
                 ...
@@ -437,8 +440,8 @@ seq.yeartrimester <- function(
         new_yeartrimester(
             seq_date(
                 from = from,
-                to   = to,
-                by   = by_tri,
+                to = to,
+                by = by_tri,
                 length.out = length.out,
                 along.with = along.with,
                 ...
@@ -496,13 +499,15 @@ set_ops <- function(class = "yeartrimester", op = "intersect") {
     force(op)
     fun <- switch(
         op,
-        "union"     = function(x, y, ...) vec_unique(vec_c(x, y)),
+        "union" = function(x, y, ...) vec_unique(vec_c(x, y)),
         "intersect" = function(x, y, ...) vec_slice(x, vec_in(x, y)),
-        "setdiff"   = function(x, y, ...) {
+        "setdiff" = function(x, y, ...) {
             vec_unique(
-                if (length(x) || length(y))
+                if (length(x) || length(y)) {
                     x[is.na(vec_match(x, y))]
-                else x
+                } else {
+                    x
+                }
             )
         }
     )
@@ -511,7 +516,8 @@ set_ops <- function(class = "yeartrimester", op = "intersect") {
         if (!inherits(y, class)) {
             abort(
                 sprintf(
-                    "`%s` must be of class \"%s\".", deparse(substitute(y)),
+                    "`%s` must be of class \"%s\".",
+                    deparse(substitute(y)),
                     class
                 )
             )

@@ -22,7 +22,8 @@ seq_date <- function(from, to, by, length.out = NULL, along.with = NULL, ...) {
             stop("'to' must be of length 1")
         }
     }
-    if (!is.null(along.with)) { # !missing(along.with) in seq.Date
+    if (!is.null(along.with)) {
+        # !missing(along.with) in seq.Date
         length.out <- length(along.with)
     } else if (!is.null(length.out)) {
         if (length(length.out) != 1L) {
@@ -32,7 +33,9 @@ seq_date <- function(from, to, by, length.out = NULL, along.with = NULL, ...) {
     }
     status <- c(!missing(to), !missing(by), !is.null(length.out))
     if (sum(status) != 2L) {
-        stop("exactly two of 'to', 'by' and 'length.out' / 'along.with' must be specified")
+        stop(
+            "exactly two of 'to', 'by' and 'length.out' / 'along.with' must be specified"
+        )
     }
     if (missing(by)) {
         from <- unclass(as.Date(from))
@@ -47,12 +50,13 @@ seq_date <- function(from, to, by, length.out = NULL, along.with = NULL, ...) {
     if (inherits(by, "difftime")) {
         by <- switch(
             attr(by, "units"),
-            secs  = 1 / 86400,
-            mins  = 1 / 1440,
+            secs = 1 / 86400,
+            mins = 1 / 1440,
             hours = 1 / 24,
-            days  = 1,
+            days = 1,
             weeks = 7
-        ) * unclass(by)
+        ) *
+            unclass(by)
     } else if (is.character(by)) {
         by2 <- strsplit(by, " ", fixed = TRUE)[[1L]]
         if (length(by2) > 2L || length(by2) < 1L) {
@@ -116,8 +120,7 @@ seq_date <- function(from, to, by, length.out = NULL, along.with = NULL, ...) {
             # months
             if (missing(to)) {
                 mon <- seq.int(r1$mon, by = by, length.out = length.out)
-            }
-            else {
+            } else {
                 to0 <- as.POSIXlt(to)
                 mon <- seq.int(
                     r1$mon,
