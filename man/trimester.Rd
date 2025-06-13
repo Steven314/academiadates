@@ -9,21 +9,31 @@ trimester(x, type = "ay_year trimester", academic_start = 1)
 \arguments{
 \item{x}{A date-time object.}
 
-\item{type}{The format to be returned for the trimester. Can be "trimester",
-"ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester"
-(academic year with trimester in numeric form), "year_start/end".,
-"date_last", or "date_first". These are similar to the options for
-\code{\link[lubridate:quarter]{lubridate::quarter}}.}
+\item{type}{The format to be returned for the trimester. See details. They
+are similar to the options for \code{\link[lubridate:quarter]{lubridate::quarter}}.}
 
 \item{academic_start}{A integer from 1 to 12 indicating the month for the
 start of the academic year.}
 }
 \value{
-A numeric or character depnding on \code{type}.
+A numeric, character, or factor depending on \code{type}.
 }
 \description{
 Trimesters divide the year into thirds. This is largely based on
 \code{\link[lubridate:quarter]{lubridate::quarter}}.
+}
+\details{
+The type argument has a number of possibilities.
+\itemize{
+\item \verb{ay_year trimester}: The default. Academic year followed by a "T" and the trimester number.
+\item \code{trimester}: A \strong{numeric} value of the trimester.
+\item \code{ay_year.trimester}: Academic year with trimester in \strong{numeric form}.
+\item \code{year_start/end}: The calendar years which the academic year spans.
+\item \code{date_last}: Date on which the term ends, rounded down to the month.
+\item \code{date_first}: Date on which the term begins, rounded down to the month.
+\item \code{season}: The season of the term. This is a \strong{factor}.
+\item \verb{season cal_year}: The season with the calendar year.
+}
 }
 \examples{
 trimester(lubridate::as_date("2024-08-24"), academic_start = 5)

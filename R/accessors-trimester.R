@@ -3,16 +3,23 @@
 #' Trimesters divide the year into thirds. This is largely based on
 #' [`lubridate::quarter`].
 #'
+#' The type argument has a number of possibilities.
+#' - `ay_year trimester`: The default. Academic year followed by a "T" and the trimester number.
+#' - `trimester`: A **numeric** value of the trimester.
+#' - `ay_year.trimester`: Academic year with trimester in **numeric form**.
+#' - `year_start/end`: The calendar years which the academic year spans.
+#' - `date_last`: Date on which the term ends, rounded down to the month.
+#' - `date_first`: Date on which the term begins, rounded down to the month.
+#' - `season`: The season of the term. This is a **factor**.
+#' - `season cal_year`: The season with the calendar year.
+#'
 #' @param x A date-time object.
-#' @param type The format to be returned for the trimester. Can be "trimester",
-#'   "ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester"
-#'   (academic year with trimester in numeric form), "year_start/end".,
-#'   "date_last", or "date_first". These are similar to the options for
-#'   [`lubridate::quarter`].
+#' @param type The format to be returned for the trimester. See details. They
+#'   are similar to the options for [`lubridate::quarter`].
 #' @param academic_start A integer from 1 to 12 indicating the month for the
 #'   start of the academic year.
 #'
-#' @returns A numeric or character depnding on `type`.
+#' @returns A numeric, character, or factor depending on `type`.
 #' @importFrom lubridate today as_date month year add_with_rollback make_date
 #' @export
 #'
@@ -68,9 +75,48 @@ trimester <- function(x, type = "ay_year trimester", academic_start = 1) {
     ) -
         lubridate::days(1)
 
+    # This might come out weird at times, so some experimentation is probably
+    # needed.
+    season <- sapply(
+        (starting_months[trimester] %/% 4) + 1,
+        \(x) {
+            switch(
+                x,
+                "1" = "Spring",
+                "2" = "Summer",
+                "3" = "Fall"
+            )
+        },
+        USE.NAMES = FALSE
+    )
+
+    # Assigning seasons, which have four per year, doesn't make sense for all
+    # `academic_start` values. When it does make sense, it's useful. Perhaps a
+    # dynamic system with Winter as well, or letting the user supply their own
+    # break points would be better in the long term.
+
+    # 1, 5, 9 make the most sense to me. Other combinations get a little fuzzy
+    # between what should be called which season.
+
+    # This probably is misaligned with the `season` above, so it comes out weird
+    # at times.
+    if (starting_months[1] < 4) {
+        season_order <- c("Spring", "Summer", "Fall")
+    } else if (starting_months[1] < 8) {
+        season_order <- c("Summer", "Fall", "Spring")
+    } else {
+        season_order <- c("Fall", "Spring", "Summer")
+    }
+
     switch(
         type,
         "trimester" = trimester,
+        "season" = ordered(season, levels = season_order),
+        "season cal_year" = sprintf(
+            "%s %s",
+            season,
+            cal_year
+        ),
         "ay_year trimester" = sprintf(
             "%d T%d",
             ay_year,
