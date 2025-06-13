@@ -56,11 +56,8 @@ lubridate::quarter."><meta property="og:image" content="https://steven314.github
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>The format to be returned for the trimester. Can be "trimester",
-"ay_year trimester" (the default, e.g. '2025 T1'), "ay_year.trimester"
-(academic year with trimester in numeric form), "year_start/end".,
-"date_last", or "date_first". These are similar to the options for
-<code><a href="https://lubridate.tidyverse.org/reference/quarter.html" class="external-link">lubridate::quarter</a></code>.</p></dd>
+<dd><p>The format to be returned for the trimester. See details. They
+are similar to the options for <code><a href="https://lubridate.tidyverse.org/reference/quarter.html" class="external-link">lubridate::quarter</a></code>.</p></dd>
 
 
 <dt id="arg-academic-start">academic_start<a class="anchor" aria-label="anchor" href="#arg-academic-start"></a></dt>
@@ -70,8 +67,19 @@ start of the academic year.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric or character depnding on <code>type</code>.</p>
+    <p>A numeric, character, or factor depending on <code>type</code>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The type argument has a number of possibilities.</p><ul><li><p><code>ay_year trimester</code>: The default. Academic year followed by a "T" and the trimester number.</p></li>
+<li><p><code>trimester</code>: A <strong>numeric</strong> value of the trimester.</p></li>
+<li><p><code>ay_year.trimester</code>: Academic year with trimester in <strong>numeric form</strong>.</p></li>
+<li><p><code>year_start/end</code>: The calendar years which the academic year spans.</p></li>
+<li><p><code>date_last</code>: Date on which the term ends, rounded down to the month.</p></li>
+<li><p><code>date_first</code>: Date on which the term begins, rounded down to the month.</p></li>
+<li><p><code>season</code>: The season of the term. This is a <strong>factor</strong>.</p></li>
+<li><p><code>season cal_year</code>: The season with the calendar year.</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
