@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# academiadates <a href="https://steven314.github.io/academiadates/"><img src="man/figures/logo.png" align="right" height="120" alt="academiadates website" /></a>
+# academiadates <a href="https://slcarter.com/academiadates/"><img src="man/figures/logo.png" align="right" height="120" alt="academiadates website" /></a>
 
 <!-- badges: start -->
 

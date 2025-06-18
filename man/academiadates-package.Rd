@@ -14,7 +14,7 @@ Extends `tsibble` by adding a class that supports three terms per year.
 Useful links:
 \itemize{
   \item \url{https://github.com/Steven314/academiadates}
-  \item \url{https://steven314.github.io/academiadates/}
+  \item \url{https://slcarter.com/academiadates/}
   \item Report bugs at \url{https://github.com/Steven314/academiadates/issues}
 }
 
